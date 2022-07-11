@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220711133808_initial-1.cs" />
     <Compile Remove="Migrations\20220711133808_initial-1.Designer.cs" />
+    <Compile Remove="Migrations\20220711162539_add_prop_b.cs" />
+    <Compile Remove="Migrations\20220711162539_add_prop_b.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
