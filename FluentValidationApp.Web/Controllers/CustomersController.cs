@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FluentValidation;
+using FluentValidationApp.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FluentValidationApp.Web.Models;
 
 namespace FluentValidationApp.Web.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<Customer> _customerValidator;
 
-        public CustomersController(AppDbContext context)
+        public CustomersController(AppDbContext context, IValidator<Customer> customerValidator)
         {
             _context = context;
+            _customerValidator = customerValidator;
         }
 
         // GET: Customers
@@ -49,18 +49,21 @@ namespace FluentValidationApp.Web.Controllers
         }
 
         // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Email,Age,BirthDay")] Customer customer)
         {
-            if (ModelState.IsValid)
+            var result = _customerValidator.Validate(customer);
+
+            if (result.IsValid)
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(customer);
         }
 
@@ -81,7 +84,7 @@ namespace FluentValidationApp.Web.Controllers
         }
 
         // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
