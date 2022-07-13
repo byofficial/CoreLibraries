@@ -1,8 +1,12 @@
 ﻿using HangFire.Web.BackgroundJobs;
 using HangFire.Web.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace HangFire.Web.Controllers
 {
@@ -37,6 +41,33 @@ namespace HangFire.Web.Controllers
 
             //Yeni üye olan kullanıcının userId değerini al
             FireAndForgetJobs.EmailSenderToUserJob("1234", "Sitemize Hoşgeldiniz");
+            return View();
+        }
+
+        public IActionResult PictureSave()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PictureSave(IFormFile picture)
+        {
+            //Path.GetExtension() -> sadece dosyanın uzantısını noktasıyla beraber alır. Örn: .jpg
+            //Guid.NewGuid().ToString() -> rastgele isim üretir
+            string newFileName = string.Empty;
+            if (picture != null && picture.Length > 0)
+            {
+                newFileName = Guid.NewGuid().ToString() + Path.GetExtension(picture.FileName);
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/pictures", newFileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await picture.CopyToAsync(stream);
+                }
+
+                string jobID = BackgroundJobs.DelayedJobs.AddWatermarkJob(newFileName, "www.mysite.com");
+            }
             return View();
         }
     }
