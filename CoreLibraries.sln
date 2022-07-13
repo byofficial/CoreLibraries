@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RateLimit.API", "RateLimit.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmidgeApp.Web", "SmidgeApp.Web\SmidgeApp.Web.csproj", "{33B9CF35-BC24-494B-812B-835AC2AE90C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangFire.Web", "HangFire.Web\HangFire.Web.csproj", "{3E407FB9-0F82-43DD-B36F-55CC1046BBC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{33B9CF35-BC24-494B-812B-835AC2AE90C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33B9CF35-BC24-494B-812B-835AC2AE90C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33B9CF35-BC24-494B-812B-835AC2AE90C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E407FB9-0F82-43DD-B36F-55CC1046BBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E407FB9-0F82-43DD-B36F-55CC1046BBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E407FB9-0F82-43DD-B36F-55CC1046BBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E407FB9-0F82-43DD-B36F-55CC1046BBC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
