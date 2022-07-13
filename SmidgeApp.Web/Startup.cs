@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Smidge;
+using Smidge.Cache;
+using Smidge.Options;
 
 namespace SmidgeApp.Web
 {
@@ -46,7 +48,21 @@ namespace SmidgeApp.Web
             app.UseSmidge(bundle =>
             {
                 //bundle.CreateJs("my-js-bundle", "~/js/");     //Klasörün içerisindeki tüm js dosyalarýný bundle yapar
-                bundle.CreateJs("my-js-bundle", "~/js/site.js", "~/js/site2.js");
+                //Debug modda Cache iþlemi yapmadan her defasýnda App_Data dosyasýný tekrar oluþturur
+                bundle.CreateJs("my-js-bundle", "~/js/site.js", "~/js/site2.js")
+                .WithEnvironmentOptions(
+                    BundleEnvironmentOptions
+                    .Create()
+                    .ForDebug(
+                        builder => builder
+                        .EnableCompositeProcessing()
+                        .EnableFileWatcher()
+                        .SetCacheBusterType<AppDomainLifetimeCacheBuster>()
+                        .CacheControlOptions(enableEtag: false, cacheControlMaxAge: 0)
+                        )
+                    .Build());
+
+                //bundle.CreateJs("my-js-bundle", "~/js/site.js", "~/js/site2.js");
                 bundle.CreateCss("my-css-bundle", "~/css/site.css", "~/lib/bootstrap/dist/css/bootstrap.css");
             });
 
