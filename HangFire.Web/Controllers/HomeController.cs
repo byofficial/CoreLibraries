@@ -1,11 +1,8 @@
-﻿using HangFire.Web.Models;
+﻿using HangFire.Web.BackgroundJobs;
+using HangFire.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HangFire.Web.Controllers
 {
@@ -32,6 +29,15 @@ namespace HangFire.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult SignUp()
+        {
+            //Üye kayıt işlemi yapılıyor
+
+            //Yeni üye olan kullanıcının userId değerini al
+            FireAndForgetJobs.EmailSenderToUserJob("1234", "Sitemize Hoşgeldiniz");
+            return View();
         }
     }
 }

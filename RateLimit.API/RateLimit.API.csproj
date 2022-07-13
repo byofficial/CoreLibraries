@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="4.0.2" />
+    <PackageReference Include="SendGrid" Version="9.28.0" />
   </ItemGroup>
 
 
