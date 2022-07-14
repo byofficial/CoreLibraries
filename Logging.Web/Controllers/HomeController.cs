@@ -20,6 +20,15 @@ namespace Logging.Web.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogTrace("Index sayfasına girildi");
+            _logger.LogDebug("Index sayfasına girildi");
+
+            _logger.LogInformation("Index sayfasına girildi");
+
+            _logger.LogWarning("Index sayfasına girildi");
+            _logger.LogError("Index sayfasına girildi");
+            _logger.LogCritical("Index sayfasına girildi");
+
             return View();
         }
 
