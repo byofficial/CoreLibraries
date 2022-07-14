@@ -1,17 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Swagger.API.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 
 namespace Swagger.API
 {
@@ -31,6 +28,26 @@ namespace Swagger.API
             {
                 options.UseSqlServer(Configuration["ConnectionStrings"]);
             });
+
+            services.AddSwaggerGen(gen =>
+            {
+                gen.SwaggerDoc("productV1", new OpenApiInfo
+                {
+                    Version = "V1",
+                    Title = "Product API",
+                    Description = "Ürün Ekleme/Silme/Güncelleme API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Burak YILDIZ",
+                        Email = "burak@mail.com",
+                        Url = new Uri("https://example.com/contact")
+                    }
+                });
+                var xmlFile = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                gen.IncludeXmlComments(xmlPath);
+            });
+
             services.AddControllers();
         }
 
@@ -41,7 +58,11 @@ namespace Swagger.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/productV1/swagger.json", "Product API");
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
