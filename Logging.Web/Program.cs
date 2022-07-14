@@ -22,7 +22,7 @@ namespace Logging.Web
                 {
                     webBuilder.UseStartup<Startup>().ConfigureLogging(logging=> {
                         logging.ClearProviders(); //tüm logging providerler kalkar
-
+                        logging.AddConsole(); //Konsol
                     });
                 });
     }

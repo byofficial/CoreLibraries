@@ -11,15 +11,16 @@ namespace Logging.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILoggerFactory loggerFactory)
         {
-            _logger = logger;
+            _loggerFactory = loggerFactory;
         }
 
         public IActionResult Index()
         {
+            var _logger = _loggerFactory.CreateLogger("Özel Sınıf");
             _logger.LogTrace("Index sayfasına girildi");
             _logger.LogDebug("Index sayfasına girildi");
 
