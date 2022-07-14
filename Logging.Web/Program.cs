@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NLog.Web;
 
 namespace Logging.Web
 {
@@ -20,10 +16,10 @@ namespace Logging.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().ConfigureLogging(logging=> {
+                    webBuilder.UseStartup<Startup>().ConfigureLogging(logging =>
+                    {
                         logging.ClearProviders(); //tüm logging providerler kalkar
-                        logging.AddConsole(); //Konsol
-                    });
+                    }).UseNLog();
                 });
     }
 }

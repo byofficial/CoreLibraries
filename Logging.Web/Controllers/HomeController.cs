@@ -11,24 +11,17 @@ namespace Logging.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILoggerFactory loggerFactory)
+        public HomeController(ILogger<HomeController> logger)
         {
-            _loggerFactory = loggerFactory;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var _logger = _loggerFactory.CreateLogger("Özel Sınıf");
-            _logger.LogTrace("Index sayfasına girildi");
-            _logger.LogDebug("Index sayfasına girildi");
 
-            _logger.LogInformation("Index sayfasına girildi");
-
-            _logger.LogWarning("Index sayfasına girildi");
-            _logger.LogError("Index sayfasına girildi");
-            _logger.LogCritical("Index sayfasına girildi");
+            _logger.LogInformation("Örnek nlog");
 
             return View();
         }
