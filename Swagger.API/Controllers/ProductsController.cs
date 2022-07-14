@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Swagger.API.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Swagger.API.Models;
 
 namespace Swagger.API.Controllers
 {
@@ -20,14 +18,28 @@ namespace Swagger.API.Controllers
             _context = context;
         }
 
-        // GET: api/Products
+        /// <summary>
+        /// Bu endpoint tüm ürünleri geri liste olarak geri döner.
+        /// </summary>
+        /// <remarks>
+        /// örnek: https://localhost:44317/api/products
+        /// </remarks>
+        /// <returns></returns>
+        [Produces("application/json")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
             return await _context.Product.ToListAsync();
         }
 
-        // GET: api/Products/5
+        /// <summary>
+        /// Bu endpoint verilen id sahip ürünü döner
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="404">verilen id sahip ürün bulanamadı</response>
+        /// <response code="200">verilen id sahip ürün var</response>
+        [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
@@ -73,9 +85,16 @@ namespace Swagger.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Bu endpoint ürün ekler
+        /// </summary>
+        /// <remarks>
+        /// örnek: product json: {"name":"kalem","price":20,"date":2.3.2022,"category":"kırtasiye"}
+        /// </remarks>
+        /// <param name="product">json product nesnesi</param>
+        /// <returns></returns>
+        [Consumes("application/json")]
+        [Produces("application/json")]
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
