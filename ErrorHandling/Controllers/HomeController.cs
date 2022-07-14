@@ -1,4 +1,6 @@
 ﻿using ErrorHandling.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,10 +30,15 @@ namespace ErrorHandling.Controllers
             return View();
         }
 
+        // [AllowAnonymous] kullanıcılar üye olmasa bile tüm kullanıcılar bu sayfayı görür
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            ViewBag.path = exception.Path;
+            ViewBag.message = exception.Error.Message;
+
+            return View();
         }
     }
 }
